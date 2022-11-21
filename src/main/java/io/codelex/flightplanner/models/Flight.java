@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Flight {
-    int id;
+    private int id;
     private Airport from;
     private Airport to;
     private String carrier;

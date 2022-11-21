@@ -11,7 +11,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/admin-api")
 public class AdminFlightController {
-    FlightService flightService;
+   private final FlightService flightService;
 
     public AdminFlightController(FlightService flightService) {
         this.flightService = flightService;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/testing-api")
 public class TestingController {
-FlightRepository flightRepository;
+    private final FlightRepository flightRepository;
 
     public TestingController(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;

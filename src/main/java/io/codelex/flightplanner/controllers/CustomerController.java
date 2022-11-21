@@ -14,11 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class CostumerController {
-    FlightService flightService;
-    AirportService airportService;
+public class CustomerController {
+    private final FlightService flightService;
+    private final AirportService airportService;
 
-    public CostumerController(FlightService flightService, AirportService airportService) {
+    public CustomerController(FlightService flightService, AirportService airportService) {
         this.flightService = flightService;
         this.airportService = airportService;
     }
@@ -31,7 +31,7 @@ public class CostumerController {
 
     @GetMapping("/airports")
     public List<Airport> searchAirport(@RequestParam String search) {
-        return airportService.searchAirport(search);
+        return airportService.searchText(search);
     }
 
     @PostMapping("/flights/search")

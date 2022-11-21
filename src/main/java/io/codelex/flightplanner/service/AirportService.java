@@ -16,24 +16,14 @@ public class AirportService {
         this.flightRepository = flightRepository;
     }
 
-    public List<Airport> searchAirport(String input) {
+    public List<Airport> searchText(String input) {
         return flightRepository.getFlightList()
                                .stream()
                                .map(f -> Arrays.asList(f.getFrom(), f.getTo()))
                                .flatMap(List::stream)
-                               .filter(a -> hasInput(a, input))
+                               .filter(a -> a.containsText(input))
                                .toList();
 
 
-    }
-
-    public boolean hasInput(Airport airport, String input) {
-        return hasSimilarStrings(airport.getAirport(), input) ||
-                hasSimilarStrings(airport.getCity(), input) ||
-                hasSimilarStrings(airport.getCountry(), input);
-    }
-
-    public boolean hasSimilarStrings(String string, String input) {
-        return string.toLowerCase().contains(input.trim().toLowerCase());
     }
 }

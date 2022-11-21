@@ -12,8 +12,8 @@ import java.util.List;
 
 @Service
 public class FlightService {
-    FlightRepository flightRepository;
-    int idCounter = 0;
+    private final FlightRepository flightRepository;
+    private int idCounter = 0;
 
     public FlightService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
