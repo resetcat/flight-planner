@@ -4,13 +4,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.codelex.flightplanner.requests.AddFlightRequest;
 import org.springframework.lang.NonNull;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
+@Entity
+@Table(name = "flights")
 public class Flight {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
     private int id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "airport_from")
     private Airport from;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "airport_to")
     private Airport to;
     private String carrier;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -34,6 +43,10 @@ public class Flight {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.departureTime = LocalDateTime.parse(request.getDepartureTime(), formatter);
         this.arrivalTime = LocalDateTime.parse(request.getArrivalTime(), formatter);
+    }
+
+    public Flight() {
+
     }
 
     public void setDepartureTime(LocalDateTime departureTime) {
