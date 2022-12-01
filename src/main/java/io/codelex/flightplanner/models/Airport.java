@@ -1,13 +1,18 @@
 package io.codelex.flightplanner.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
-
+@Entity
+@Table(name="airports")
 public class Airport {
     @NotBlank
     private String country;
     @NotBlank
     private String city;
+    @Id
     @NotBlank
     private String airport;
 
@@ -15,6 +20,10 @@ public class Airport {
         this.country = country;
         this.city = city;
         this.airport = airport;
+    }
+
+    public Airport() {
+
     }
 
     public boolean containsText(String input) {
