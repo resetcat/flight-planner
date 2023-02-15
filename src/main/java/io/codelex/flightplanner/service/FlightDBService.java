@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +20,6 @@ import java.util.Optional;
 public class FlightDBService implements FlightService {
     private final FlightDBRepository flightRepository;
     private final AirportDBRepository airportRepository;
-
 
 
     public FlightDBService(FlightDBRepository flightRepository,
@@ -36,26 +35,23 @@ public class FlightDBService implements FlightService {
         checkRequest(newFlight);
         return flightRepository.save(newFlight);
     }
+
     synchronized private Airport addIfAirportIfExists(Airport airport) {
         Optional<Airport> existingAirport = airportRepository.findById(airport.getAirport());
         return existingAirport.orElseGet(() -> airportRepository.save(airport));
     }
 
 
-
     public boolean checkIfAlreadyInList(Flight flight) {
-        return flightRepository.findAll()
-                               .stream()
-                               .anyMatch(f -> f.getFrom().equals(flight.getFrom()) &&
-                                       f.getTo().equals(flight.getTo()) &&
-                                       f.getCarrier().equals(flight.getCarrier()) &&
-                                       f.getDepartureTime().equals(flight.getDepartureTime()) &&
-                                       f.getArrivalTime().equals(flight.getArrivalTime()));
+        return flightRepository.checkIfAlreadyInList(flight.getFrom(), flight.getTo(),
+                                                     flight.getCarrier(), flight.getDepartureTime(),
+                                                     flight.getArrivalTime());
     }
 
     public Flight getFlightByID(int id) {
         return flightRepository.findById(id)
-                               .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                               .orElseThrow(
+                                       () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public void deleteFlight(int id) {
@@ -63,18 +59,9 @@ public class FlightDBService implements FlightService {
     }
 
 
-
     public List<Flight> findRequested(SearchFlightsRequest request) {
-        return flightRepository.findAll()
-                               .stream()
-                               .filter(flight -> flight.getFrom()
-                                                       .getAirport()
-                                                       .equals(request.getFrom()) &&
-                                       flight.getTo().getAirport().equals(request.getTo()) &&
-                                       flight.getDepartureTime()
-                                             .toLocalDate()
-                                             .equals(request.getDepartureDate()))
-                               .toList();
+        return flightRepository.findRequested(request.getFrom(), request.getTo(),
+                                              LocalDateTime.from(request.getDepartureDate()));
     }
 
     @Override
@@ -83,11 +70,12 @@ public class FlightDBService implements FlightService {
     }
 
     public List<Airport> searchAirport(String input) {
-        return flightRepository.findAll()
-                               .stream()
-                               .map(f -> Arrays.asList(f.getFrom(), f.getTo()))
-                               .flatMap(List::stream)
-                               .filter(a -> a.containsText(input))
-                               .toList();
+       return airportRepository.searchAirport(input.toLowerCase());
+//        return flightRepository.findAll()
+//                               .stream()
+//                               .map(f -> Arrays.asList(f.getFrom(), f.getTo()))
+//                               .flatMap(List::stream)
+//                               .filter(a -> a.containsText(input))
+//                               .toList();
     }
 }

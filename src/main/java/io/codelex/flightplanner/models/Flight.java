@@ -49,6 +49,9 @@ public class Flight {
 
     }
 
+    public Flight(Airport from, Airport to, LocalDateTime departureTime) {
+    }
+
     public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }

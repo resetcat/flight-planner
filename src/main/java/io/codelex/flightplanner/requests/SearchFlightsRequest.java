@@ -1,36 +1,38 @@
 package io.codelex.flightplanner.requests;
 
+import io.codelex.flightplanner.models.Airport;
+
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class SearchFlightsRequest {
     @NotNull
-    private String from;
+    private Airport from;
     @NotNull
-    private String to;
+    private Airport to;
 
     @NotNull
     private LocalDate departureDate;
 
-    public SearchFlightsRequest(String from, String to, LocalDate departureDate) {
+    public SearchFlightsRequest(Airport from, Airport to, LocalDate departureDate) {
         this.from = from;
         this.to = to;
         this.departureDate = departureDate;
     }
 
-    public String getFrom() {
+    public Airport getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(Airport from) {
         this.from = from;
     }
 
-    public String getTo() {
+    public Airport getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(Airport to) {
         this.to = to;
     }
 
