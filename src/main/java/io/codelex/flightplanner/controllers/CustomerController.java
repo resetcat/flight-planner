@@ -4,7 +4,6 @@ import io.codelex.flightplanner.models.Airport;
 import io.codelex.flightplanner.models.Flight;
 import io.codelex.flightplanner.requests.PageResult;
 import io.codelex.flightplanner.requests.SearchFlightsRequest;
-import io.codelex.flightplanner.service.AirportService;
 import io.codelex.flightplanner.service.FlightService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +15,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class CustomerController {
     private final FlightService flightService;
-    private final AirportService airportService;
 
-    public CustomerController(FlightService flightService, AirportService airportService) {
+    public CustomerController(FlightService flightService) {
         this.flightService = flightService;
-        this.airportService = airportService;
     }
 
 
@@ -31,7 +28,7 @@ public class CustomerController {
 
     @GetMapping("/airports")
     public List<Airport> searchAirport(@RequestParam String search) {
-        return airportService.searchText(search);
+        return flightService.searchAirport(search);
     }
 
     @PostMapping("/flights/search")
